@@ -20,6 +20,23 @@ angular.module('myApp.controllers', [])
 		
 		init();
 		
+		var context = canvas.getContext('2d');
+		$scope.onClick1 = function()
+		{
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			var w = canvas.width;
+			canvas.width = 1;
+			canvas.width = w;
+		}
+		$scope.onClick2 = function()
+		{
+			context = canvas.getContext('2d');
+			context.clear();
+		}
+		function toImage(){
+		
+		}
+		
         function init() {
 			console.log("Got Here");
             if (window.top != window) {
@@ -42,11 +59,6 @@ angular.module('myApp.controllers', [])
             stage.addEventListener("stagemousedown", handleMouseDown);
             stage.addEventListener("stagemouseup", handleMouseUp);
 
-            title = new createjs.Text("Click and Drag to draw", "36px Arial", "#777777");
-            title.x = 300;
-            title.y = 200;
-            stage.addChild(title);
-
             stage.addChild(drawingCanvas);
             stage.update();
         }
@@ -56,7 +68,7 @@ angular.module('myApp.controllers', [])
         function handleMouseDown(event) {
             if (stage.contains(title)) { stage.clear(); stage.removeChild(title); }
             color = colors[(index++)%colors.length];
-            stroke = Math.random()*30 + 10 | 0;
+            stroke = 15;
             oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
             oldMidPt = oldPt;
             stage.addEventListener("stagemousemove" , handleMouseMove);
