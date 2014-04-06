@@ -49,15 +49,14 @@ angular.module('myApp.controllers', [])
 		var context = canvas.getContext('2d');
 		$scope.onClick1 = function()
 		{
-			context.clearRect(0, 0, canvas.width, canvas.height);
+			
 			var w = canvas.width;
 			canvas.width = 1;
 			canvas.width = w;
+			context.clearRect(0, 0, canvas.width, canvas.height);
 		}
 		$scope.onClick2 = function()
-		{
-			var data = document.getElementById("inputtext").value;
-			console.log(data);
+		{		
 			toImage();
 			
 		}
@@ -128,24 +127,31 @@ angular.module('myApp.controllers', [])
    }])
 
    .controller('MainPageCtrl', ['$scope', 'loginService', '$location', function($scope, loginService, $location) {
-		var place=1;
+		var place=11;
 		init();
 		var listRef = new Firebase('https://comicshare.firebaseIO.com/message_list');
 		
 		function init(){
 			var listRef = new Firebase('https://comicshare.firebaseio.com/message_list');
 			listRef.on('child_added', function(snapshot) {
+				
 				var msgData = snapshot.val().text;
 				console.log(place);
-				if(place < 12){
+				if(place > 12){place=1;}
+				
+			
 				var canvas = document.getElementById(""+place);
 				var ctx = canvas.getContext("2d");
+				var w = canvas.width;				
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				canvas.width = w;
+				
 				var img = new Image();
 				img.src = msgData;
 				ctx.drawImage(img,0,0,480,520,0,0,130,140);
 				place ++;
-				}
-				else{place=0;}
+				
+				
 			});
 		}
    }])
