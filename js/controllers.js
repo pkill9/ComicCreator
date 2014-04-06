@@ -2,8 +2,33 @@
 
 /* Controllers */
 angular.module('myApp.controllers', [])
+   
    .controller('HomeCtrl', ['$scope', 'syncData', function($scope, syncData) {
-        
+    
+	
+	
+	$scope.onClick3 = function(){
+	/*	var chatRef = new Firebase('https://comicshare.firebaseio.com');
+		var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
+		auth.login('facebook');	
+		if (error) {
+			// an error occurred while attempting login
+			console.log(error);
+			} else if (user) {
+			// user authenticated with Firebase
+			console.log('User ID: ' + user.id + ', Provider: ' + user.provider);
+			} else {
+			// user is logged out
+				}
+			}
+			
+		}
+	
+	
+	function init(){
+	 */		
+   }
+  
    }])
 
   .controller('ChatCtrl', ['$scope', 'syncData', function($scope, syncData) {
@@ -18,6 +43,7 @@ angular.module('myApp.controllers', [])
         var colors;
         var index;
 		
+		
 		init();
 		
 		var context = canvas.getContext('2d');
@@ -30,16 +56,20 @@ angular.module('myApp.controllers', [])
 		}
 		$scope.onClick2 = function()
 		{
-			context = canvas.getContext('2d');
-			context.clear();
+			toImage();
+			
 		}
 		function toImage(){
-		
+			var ctx = canvas.getContext("2d");
+			var img = new Image();
+			img.src = canvas.toDataURL();
+			newMessageRef.set({'appid': '2', 'text': img});
 		}
 		
         function init() {
-			console.log("Got Here");
-            if (window.top != window) {
+			var messageListRef = new Firebase('https://SampleChat.firebaseIO-demo.com/message_list');
+            var newMessageRef = messageListRef.push();
+			if (window.top != window) {
                 document.getElementById("header").style.display = "none";
             }
             canvas = document.getElementById("myCanvas");
@@ -93,8 +123,11 @@ angular.module('myApp.controllers', [])
         }
    }])
 
-   .controller('HomeCtrl', ['$scope', 'loginService', '$location', function($scope, loginService, $location) {
-  
+   .controller('MainPageCtrl', ['$scope', 'loginService', '$location', function($scope, loginService, $location) {
+		init();
+		
+		function init(){
+		}
    }])
 
    .controller('AccountCtrl', ['$scope', 'loginService', 'syncData', '$location', function($scope, loginService, syncData, $location) {
