@@ -56,6 +56,8 @@ angular.module('myApp.controllers', [])
 		}
 		$scope.onClick2 = function()
 		{
+			var data = document.getElementById("inputtext").value;
+			console.log(data);
 			toImage();
 			
 		}
@@ -63,12 +65,14 @@ angular.module('myApp.controllers', [])
 			var ctx = canvas.getContext("2d");
 			var img = new Image();
 			img.src = canvas.toDataURL();
-			newMessageRef.set({'appid': '2', 'text': img});
+			console.log(img.src)
+			var messageListRef = new Firebase("https://comicshare.firebaseio.com/message_list");
+            var newMessageRef = messageListRef.push();
+			newMessageRef.set({'appid': '2', 'text': img.src});
 		}
 		
         function init() {
-			var messageListRef = new Firebase('https://SampleChat.firebaseIO-demo.com/message_list');
-            var newMessageRef = messageListRef.push();
+			
 			if (window.top != window) {
                 document.getElementById("header").style.display = "none";
             }
@@ -124,9 +128,25 @@ angular.module('myApp.controllers', [])
    }])
 
    .controller('MainPageCtrl', ['$scope', 'loginService', '$location', function($scope, loginService, $location) {
+		var place=1;
 		init();
+		var listRef = new Firebase('https://comicshare.firebaseIO.com/message_list');
 		
 		function init(){
+			var listRef = new Firebase('https://comicshare.firebaseio.com/message_list');
+			listRef.on('child_added', function(snapshot) {
+				var msgData = snapshot.val().text;
+				console.log(place);
+				if(place < 12){
+				var canvas = document.getElementById(""+place);
+				var ctx = canvas.getContext("2d");
+				var img = new Image();
+				img.src = msgData;
+				ctx.drawImage(img,0,0,480,520,0,0,130,140);
+				place ++;
+				}
+				else{place=0;}
+			});
 		}
    }])
 
